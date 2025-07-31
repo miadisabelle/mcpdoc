@@ -1,4 +1,5 @@
 from miamcpdoc.main import create_server
+from miamcpdoc.splash import SPLASH
 
 def main():
     """Hugging Face Documentation MCP Server."""
@@ -10,6 +11,8 @@ def main():
         {"name": "HuggingFaceTransformers", "llms_txt": "https://huggingface-projects-docs-llms-txt.hf.space/transformers/llms.txt"}
     ]
     
+    print(SPLASH)
+    print("Loading Hugging Face documentation...")
     server = create_server(doc_sources)
     server.run(transport="stdio")
 
