@@ -1,4 +1,4 @@
-# MCP LLMS-TXT Documentation Server
+# MCP LLMS-TXT Documentation Server (miamcpdoc)
 
 ## Overview
 
@@ -33,9 +33,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 > **Note: Security and Domain Access Control**
 > 
-> For security reasons, mcpdoc implements strict domain access controls:
+> For security reasons, miamcpdoc implements strict domain access controls:
 > 
-> 1. **Remote llms.txt files**: When you specify a remote llms.txt URL (e.g., `https://langchain-ai.github.io/langgraph/llms.txt`), mcpdoc automatically adds only that specific domain (`langchain-ai.github.io`) to the allowed domains list. This means the tool can only fetch documentation from URLs on that domain.
+> 1. **Remote llms.txt files**: When you specify a remote llms.txt URL (e.g., `https://langchain-ai.github.io/langgraph/llms.txt`), miamcpdoc automatically adds only that specific domain (`langchain-ai.github.io`) to the allowed domains list. This means the tool can only fetch documentation from URLs on that domain.
 > 
 > 2. **Local llms.txt files**: When using a local file, NO domains are automatically added to the allowed list. You MUST explicitly specify which domains to allow using the `--allowed-domains` parameter.
 > 
@@ -47,11 +47,26 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 
 #### (Optional) Test the MCP server locally with your `llms.txt` file(s) of choice:
 ```bash
-uvx --from mcpdoc mcpdoc \
+uvx --from miamcpdoc miamcpdoc \
     --urls "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt" "LangChain:https://python.langchain.com/llms.txt" \
     --transport sse \
     --port 8082 \
     --host localhost
+```
+
+#### Or use the specialized server commands:
+```bash
+# AI SDK documentation
+uvx --from miamcpdoc miamcpdoc-aisdk
+
+# Hugging Face documentation  
+uvx --from miamcpdoc miamcpdoc-huggingface
+
+# LangGraph documentation
+uvx --from miamcpdoc miamcpdoc-langgraph
+
+# What is LLMs documentation
+uvx --from miamcpdoc miamcpdoc-llms
 ```
 
 * This should run at: http://localhost:8082
@@ -83,8 +98,8 @@ npx @modelcontextprotocol/inspector
       "command": "uvx",
       "args": [
         "--from",
-        "mcpdoc",
-        "mcpdoc",
+        "miamcpdoc",
+        "miamcpdoc",
         "--urls",
         "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt LangChain:https://python.langchain.com/llms.txt",
         "--transport",
@@ -168,8 +183,8 @@ Then, try the example prompt:
 >         "--python",
 >         "/path/to/python",
 >         "--from",
->         "mcpdoc",
->         "mcpdoc",
+>         "miamcpdoc",
+>         "miamcpdoc",
 >         "--urls",
 >         "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt",
 >         "--transport",
@@ -211,7 +226,7 @@ Then, try the example prompt:
 
 * In a terminal after installing [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), run this command to add the MCP server to your project:
 ```
-claude mcp add-json langgraph-docs '{"type":"stdio","command":"uvx" ,"args":["--from", "mcpdoc", "mcpdoc", "--urls", "langgraph:https://langchain-ai.github.io/langgraph/llms.txt", "--urls", "LangChain:https://python.langchain.com/llms.txt"]}' -s local
+claude mcp add-json langgraph-docs '{"type":"stdio","command":"uvx" ,"args":["--from", "miamcpdoc", "miamcpdoc", "--urls", "langgraph:https://langchain-ai.github.io/langgraph/llms.txt", "--urls", "LangChain:https://python.langchain.com/llms.txt"]}' -s local
 ```
 * You will see `~/.claude.json` updated.
 * Test by launching Claude Code and running to view your tools:
@@ -244,7 +259,7 @@ Then, try the example prompt:
 
 ## Command-line Interface
 
-The `mcpdoc` command provides a simple CLI for launching the documentation server. 
+The `miamcpdoc` command provides a simple CLI for launching the documentation server. 
 
 You can specify documentation sources in three ways, and these can be combined:
 
@@ -253,7 +268,7 @@ You can specify documentation sources in three ways, and these can be combined:
 * This will load the LangGraph Python documentation from the `sample_config.yaml` file in this repo.
 
 ```bash
-mcpdoc --yaml sample_config.yaml
+miamcpdoc --yaml sample_config.yaml
 ```
 
 2. Using a JSON config file:
@@ -261,7 +276,7 @@ mcpdoc --yaml sample_config.yaml
 * This will load the LangGraph Python documentation from the `sample_config.json` file in this repo.
 
 ```bash
-mcpdoc --json sample_config.json
+miamcpdoc --json sample_config.json
 ```
 
 3. Directly specifying llms.txt URLs with optional names:
@@ -271,13 +286,13 @@ mcpdoc --json sample_config.json
 * This is how we loaded `llms.txt` for the MCP server above.
 
 ```bash
-mcpdoc --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt --urls LangChain:https://python.langchain.com/llms.txt
+miamcpdoc --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt --urls LangChain:https://python.langchain.com/llms.txt
 ```
 
 You can also combine these methods to merge documentation sources:
 
 ```bash
-mcpdoc --yaml sample_config.yaml --json sample_config.json --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt --urls LangChain:https://python.langchain.com/llms.txt
+miamcpdoc --yaml sample_config.yaml --json sample_config.json --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt --urls LangChain:https://python.langchain.com/llms.txt
 ```
 
 ## Additional Options
@@ -288,7 +303,7 @@ mcpdoc --yaml sample_config.yaml --json sample_config.json --urls LangGraph:http
 Example with additional options:
 
 ```bash
-mcpdoc --yaml sample_config.yaml --follow-redirects --timeout 15
+miamcpdoc --yaml sample_config.yaml --follow-redirects --timeout 15
 ```
 
 This will load the LangGraph Python documentation with a 15-second timeout and follow any HTTP redirects if necessary.
@@ -302,7 +317,7 @@ Each source must include an `llms_txt` URL and can optionally include a `name`:
 ### YAML Configuration Example (sample_config.yaml)
 
 ```yaml
-# Sample configuration for mcp-mcpdoc server
+# Sample configuration for miamcpdoc server
 # Each entry must have a llms_txt URL and optionally a name
 - name: LangGraph Python
   llms_txt: https://langchain-ai.github.io/langgraph/llms.txt
@@ -322,7 +337,7 @@ Each source must include an `llms_txt` URL and can optionally include a `name`:
 ## Programmatic Usage
 
 ```python
-from mcpdoc.main import create_server
+from miamcpdoc.main import create_server
 
 # Create a server with documentation sources
 server = create_server(

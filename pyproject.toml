@@ -14,6 +14,10 @@ dependencies = [
 
 [project.scripts]
 miamcpdoc = "miamcpdoc.cli:main"
+miamcpdoc-aisdk = "miamcpdoc.aisdk_docs_mcp:main"
+miamcpdoc-huggingface = "miamcpdoc.huggingface_docs_mcp:main"
+miamcpdoc-langgraph = "miamcpdoc.langgraph_docs_mcp:main"
+miamcpdoc-llms = "miamcpdoc.what_is_llms_mcp:main"
 
 [dependency-groups]
 test = [

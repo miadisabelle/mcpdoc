@@ -8,9 +8,9 @@ from typing import List, Dict
 
 import yaml
 
-from mcpdoc._version import __version__
-from mcpdoc.main import create_server, DocSource
-from mcpdoc.splash import SPLASH
+from miamcpdoc._version import __version__
+from miamcpdoc.main import create_server, DocSource
+from miamcpdoc.splash import SPLASH
 
 
 class CustomFormatter(
@@ -130,7 +130,7 @@ def parse_args() -> argparse.Namespace:
         "--version",
         "-V",
         action="version",
-        version=f"mcpdoc {__version__}",
+        version=f"miamcpdoc {__version__}",
         help="Show version information and exit",
     )
 
@@ -205,7 +205,7 @@ def main() -> None:
             "--version",
             "-V",
             action="version",
-            version=f"mcpdoc {__version__}",
+            version=f"miamcpdoc {__version__}",
             help="Show version information and exit",
         )
         help_parser.print_help()
