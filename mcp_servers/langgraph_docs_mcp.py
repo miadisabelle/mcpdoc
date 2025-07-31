@@ -6,4 +6,4 @@ doc_sources = [
 ]
 
 server = create_server(doc_sources)
-server.run(transport="stdio", port=5000)
+server.run(transport="stdio")
