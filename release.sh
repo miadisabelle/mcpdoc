@@ -52,7 +52,7 @@ if ! grep -q 'name = "miamcpdoc"' pyproject.toml; then
 fi
 
 # Get current version
-CURRENT_VERSION=$(grep 'version = ' pyproject.toml | sed 's/version = "//' | sed 's/"//')
+CURRENT_VERSION=$(grep '^version = ' pyproject.toml | sed 's/version = "//' | sed 's/"//')
 echo -e "${BLUE}📋 Current version: ${CURRENT_VERSION}${NC}"
 
 # Determine bump type from argument or default to patch
@@ -67,7 +67,7 @@ NEW_VERSION=$(increment_version "$CURRENT_VERSION" "$BUMP_TYPE")
 echo -e "${GREEN}🔢 Auto-bumping ${BUMP_TYPE} version: ${CURRENT_VERSION} → ${NEW_VERSION}${NC}"
 
 # Update version in pyproject.toml
-sed -i.bak "s/version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" pyproject.toml
+sed -i.bak "s/^version = \"$CURRENT_VERSION\"/version = \"$NEW_VERSION\"/" pyproject.toml
 rm pyproject.toml.bak
 
 # Update version in _version.py
@@ -78,6 +78,12 @@ echo -e "${GREEN}✅ Version updated to ${NEW_VERSION}${NC}"
 # Clean previous builds
 echo -e "${BLUE}🧹 Cleaning previous builds...${NC}"
 rm -rf dist/ build/ *.egg-info/
+
+# Install build if not available
+if ! python -c "import build" 2>/dev/null; then
+    echo -e "${YELLOW}⚠️  build module not found. Installing...${NC}"
+    pip install build
+fi
 
 # Build the package
 echo -e "${BLUE}🔨 Building package...${NC}"
