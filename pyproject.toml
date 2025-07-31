@@ -1,6 +1,6 @@
 [project]
-name = "mcpdoc"
-version = "0.0.10"
+name = "mia-mcpdoc"
+version = "0.0.8"
 description = "Server llms-txt documentation over MCP"
 readme = "README.md"
 license = "MIT"
@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-mcpdoc = "mcpdoc.cli:main"
+mia-mcpdoc = "mcpdoc.cli:main"
 
 [dependency-groups]
 test = [
