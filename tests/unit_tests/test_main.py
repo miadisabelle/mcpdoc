@@ -2,7 +2,7 @@
 
 import pytest
 
-from mcpdoc.main import (
+from miamcpdoc.main import (
     _get_fetch_description,
     _is_http_or_https,
     extract_domain,
