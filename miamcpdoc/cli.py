@@ -229,6 +229,11 @@ def main() -> None:
         creative_frameworks_mcp.main()
         return
 
+    if args.miadi_mcp_server_docs:
+        from miamcpdoc import mcp_server_docs_mcp
+        mcp_server_docs_mcp.main()
+        return
+
     # Load doc sources based on command-line arguments
     doc_sources: List[DocSource] = []
 
