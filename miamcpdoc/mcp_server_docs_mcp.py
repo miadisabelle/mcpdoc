@@ -4,7 +4,9 @@ from miamcpdoc.splash import SPLASH
 def main():
     """Miadi MCP Server Documentation MCP Server."""
     doc_sources = [
-        {"name": "MiadiMCPServer", "llms_txt": "./miamcpdoc/mcp_server_docs/llms-miadi-mcp-server.txt"}
+        import os
+
+        {"name": "MiadiMCPServer", "llms_txt": os.path.join(os.path.dirname(__file__), "mcp_server_docs", "llms-miadi-mcp-server.txt")}
     ]
     
     print(SPLASH)
