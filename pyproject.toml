@@ -1,6 +1,6 @@
 [project]
 name = "miamcpdoc"
-version = "0.0.18"
+version = "0.0.21"
 description = "Mia's Server llms-txt documentation over MCP"
 readme = "README.md"
 license = "MIT"
@@ -39,12 +39,15 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.sdist]
 include = [
+    "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
+    "miamcpdoc/*.txt",
     "miamcpdoc/mcp_server_docs/*.txt",
 ]
 
 [tool.hatch.build.targets.wheel]
 include = [
+    "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
     "miamcpdoc/mcp_server_docs/*.txt",
 ]

@@ -1,10 +1,10 @@
+import os
+
 from miamcpdoc.main import create_server
 from miamcpdoc.splash import SPLASH
 
 def main():
     """Creative Frameworks Documentation MCP Server."""
-    import os
-
     doc_sources = [
         {"name": "CreativeOrientation", "llms_txt": os.path.join(os.path.dirname(__file__), "creative_frameworks", "llms-creative-orientation.txt")},
         {"name": "NarrativeRemixing", "llms_txt": os.path.join(os.path.dirname(__file__), "creative_frameworks", "llms-narrative-remixing.txt")},
