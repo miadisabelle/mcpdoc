@@ -101,6 +101,17 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--creative-frameworks",
+        action="store_true",
+        help="Load documentation for Creative Orientation, Narrative Remixing, and RISE Frameworks.",
+    )
+    parser.add_argument(
+        "--miadi-mcp-server-docs",
+        action="store_true",
+        help="Load documentation for Miadi MCP Server.",
+    )
+
+    parser.add_argument(
         "--log-level",
         type=str,
         default="INFO",
@@ -212,6 +223,11 @@ def main() -> None:
         sys.exit(0)
 
     args = parse_args()
+
+    if args.creative_frameworks:
+        from miamcpdoc import creative_frameworks_mcp
+        creative_frameworks_mcp.main()
+        return
 
     # Load doc sources based on command-line arguments
     doc_sources: List[DocSource] = []
