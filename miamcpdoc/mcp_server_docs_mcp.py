@@ -10,7 +10,7 @@ def main():
     ]
     
     print(SPLASH)
-    print("Loading Miadi MCP Server documentation...")
+    print("Miadi MCP Server documentation server is running (blocking terminal). Press Ctrl+C to stop.")
     server = create_server(doc_sources)
     server.run(transport="stdio")
 

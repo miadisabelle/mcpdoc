@@ -1,6 +1,6 @@
 [project]
 name = "miamcpdoc"
-version = "0.0.21"
+version = "0.0.24"
 description = "Mia's Server llms-txt documentation over MCP"
 readme = "README.md"
 license = "MIT"
@@ -50,6 +50,7 @@ include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
     "miamcpdoc/mcp_server_docs/*.txt",
+    "miamcpdoc/*.txt",
 ]
 
 [tool.pytest.ini_options]

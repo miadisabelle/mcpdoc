@@ -13,7 +13,7 @@ def main():
     ]
     
     print(SPLASH)
-    print("Loading Creative Frameworks documentation...")
+    print("Creative Frameworks documentation server is running (blocking terminal). Press Ctrl+C to stop.")
     server = create_server(doc_sources)
     server.run(transport="stdio")
 
