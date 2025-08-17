@@ -268,11 +268,11 @@ Then, try the example prompt:
 - **`miamcpdoc`** - General-purpose MCP server for custom llms.txt files
 
 ### Specialized Documentation Servers
-- **`miamcpdoc-aisdk`** - AI SDK documentation server
-- **`miamcpdoc-huggingface`** - Hugging Face documentation server  
-- **`miamcpdoc-langgraph`** - LangGraph documentation server
-- **`miamcpdoc-llms`** - What is LLMs documentation server
-- **`miamcpdoc-creative`** - Creative Frameworks documentation server
+- **`miamcpdoc-aisdk`** - Vercel AI SDK documentation (ai-sdk.dev)
+- **`miamcpdoc-huggingface`** - Hugging Face ecosystem documentation (Transformers, Diffusers, Accelerate, Hub, Python Hub)
+- **`miamcpdoc-langgraph`** - LangGraph and LangChain Python documentation
+- **`miamcpdoc-llms`** - What is LLMs documentation (llmstxt.org)
+- **`miamcpdoc-creative`** - Creative Frameworks documentation (RISE, Narrative Remixing, Creative Orientation)
 
 ### Creative Frameworks Server (`miamcpdoc-creative`)
 
@@ -310,6 +310,88 @@ When connected to an MCP client, the server provides access to:
         "miamcpdoc", 
         "miamcpdoc-creative"
       ]
+    }
+  }
+}
+```
+
+### Other Specialized Servers
+
+#### AI SDK Server (`miamcpdoc-aisdk`)
+Provides access to Vercel AI SDK documentation for building AI-powered applications.
+
+**Usage:**
+```bash
+miamcpdoc-aisdk
+```
+
+**MCP Configuration:**
+```json
+{
+  "mcpServers": {
+    "ai-sdk-docs": {
+      "command": "uvx",
+      "args": ["--from", "miamcpdoc", "miamcpdoc-aisdk"]
+    }
+  }
+}
+```
+
+#### Hugging Face Server (`miamcpdoc-huggingface`)
+Comprehensive access to Hugging Face ecosystem documentation including Transformers, Diffusers, Accelerate, Hub, and Python Hub.
+
+**Usage:**
+```bash
+miamcpdoc-huggingface
+```
+
+**MCP Configuration:**
+```json
+{
+  "mcpServers": {
+    "huggingface-docs": {
+      "command": "uvx",
+      "args": ["--from", "miamcpdoc", "miamcpdoc-huggingface"]
+    }
+  }
+}
+```
+
+#### LangGraph Server (`miamcpdoc-langgraph`)
+Access to both LangGraph and LangChain Python documentation for building agentic applications.
+
+**Usage:**
+```bash
+miamcpdoc-langgraph
+```
+
+**MCP Configuration:**
+```json
+{
+  "mcpServers": {
+    "langgraph-docs": {
+      "command": "uvx",
+      "args": ["--from", "miamcpdoc", "miamcpdoc-langgraph"]
+    }
+  }
+}
+```
+
+#### LLMs Information Server (`miamcpdoc-llms`)
+Provides access to foundational information about LLMs and the llms.txt standard.
+
+**Usage:**
+```bash
+miamcpdoc-llms
+```
+
+**MCP Configuration:**
+```json
+{
+  "mcpServers": {
+    "llms-info": {
+      "command": "uvx",
+      "args": ["--from", "miamcpdoc", "miamcpdoc-llms"]
     }
   }
 }
