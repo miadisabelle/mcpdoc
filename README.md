@@ -69,6 +69,9 @@ uvx --from miamcpdoc miamcpdoc-langgraph
 
 # What is LLMs documentation
 uvx --from miamcpdoc miamcpdoc-llms
+
+# Creative Frameworks documentation (RISE, Narrative Remixing, Creative Orientation)
+uvx --from miamcpdoc miamcpdoc-creative
 ```
 
 * This should run at: http://localhost:8082
@@ -258,6 +261,59 @@ Then, try the example prompt:
 * It will ask to approve tool calls.
 
 ![Screenshot 2025-03-18 at 2 14 37 PM](https://github.com/user-attachments/assets/5b9a2938-ea69-4443-8d3b-09061faccad0)
+
+## Available CLI Commands
+
+### Main Command
+- **`miamcpdoc`** - General-purpose MCP server for custom llms.txt files
+
+### Specialized Documentation Servers
+- **`miamcpdoc-aisdk`** - AI SDK documentation server
+- **`miamcpdoc-huggingface`** - Hugging Face documentation server  
+- **`miamcpdoc-langgraph`** - LangGraph documentation server
+- **`miamcpdoc-llms`** - What is LLMs documentation server
+- **`miamcpdoc-creative`** - Creative Frameworks documentation server
+
+### Creative Frameworks Server (`miamcpdoc-creative`)
+
+The `miamcpdoc-creative` command provides access to comprehensive creative development frameworks including:
+
+- **Creative Orientation Framework** - Proactive manifestation vs reactive elimination approaches
+- **Narrative Remixing Framework** - Story transformation across domains while preserving emotional architecture  
+- **RISE Framework** - Creative-oriented reverse engineering methodology
+- **Non-Creative Orientation Conversion** - Approaches for transforming reactive patterns
+
+#### Usage
+```bash
+# Run the creative frameworks MCP server
+miamcpdoc-creative
+
+# Or use with uvx
+uvx --from miamcpdoc miamcpdoc-creative
+```
+
+#### Available Documentation Sources
+When connected to an MCP client, the server provides access to:
+- `CreativeOrientation` - Core creative vs reactive principles
+- `NarrativeRemixing` - Contextual transposition and story transformation
+- `RISEFramework` - Reverse engineering for creative archaeology
+- `NonCreativeOrientationApproach` - Converting reactive approaches to creative ones
+
+#### Example MCP Configuration
+```json
+{
+  "mcpServers": {
+    "creative-frameworks": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "miamcpdoc", 
+        "miamcpdoc-creative"
+      ]
+    }
+  }
+}
+```
 
 ## Command-line Interface
 
