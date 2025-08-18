@@ -23,15 +23,59 @@ You can find llms.txt files for langgraph and langchain here:
 
 ## Quickstart
 
-#### Install uv
+### Quick Setup
+
+#### 1. Initialize Configuration
+
+Create a `config.yaml` file in your current directory:
+
+```bash
+# Install and create basic config.yaml
+uvx --from miamcpdoc miamcpdoc --init
+
+# Create config.yaml with interactive prompts
+uvx --from miamcpdoc miamcpdoc --init --interactive
+
+# Use default bundled configuration (includes LangGraph, JGTPY, Coaiapy)
+uvx --from miamcpdoc miamcpdoc --default
+```
+
+#### 2. Run the MCP Server
+
+```bash
+# Use your config.yaml
+uvx --from miamcpdoc miamcpdoc --yaml config.yaml
+
+# Use default bundled configuration
+uvx --from miamcpdoc miamcpdoc --default
+
+# Serve via HTTP/SSE (web-accessible)  
+uvx --from miamcpdoc miamcpdoc --yaml config.yaml --transport sse --host 0.0.0.0 --port 8000
+```
+
+### Configuration Examples
+
+#### Basic config.yaml (created by `--init`)
+```yaml
+- name: LangGraph Python
+  llms_txt: https://langchain-ai.github.io/langgraph/llms.txt
+  description: LangGraph documentation for building stateful, multi-actor applications
+
+- name: JGTPY Trading Framework
+  llms_txt: https://jgtpy.jgwill.com/llms.txt
+  description: JGT Python trading framework for market data and technical analysis
+
+- name: Coaiapy AI Platform
+  llms_txt: https://coaiapy.jgwill.com/llms.txt
+  description: Coaiapy AI platform documentation and integration guides
+```
+
+#### Install uv (if needed)
 * Please see [official uv docs](https://docs.astral.sh/uv/getting-started/installation/#installation-methods) for other ways to install `uv`.
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
-
-#### Choose an `llms.txt` file to use. 
-* For example, [here's](https://langchain-ai.github.io/langgraph/llms.txt) the LangGraph `llms.txt` file.
 
 > **Note: Security and Domain Access Control**
 > 
@@ -47,8 +91,12 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 > 
 > This security measure prevents unauthorized access to domains not explicitly approved by the user, ensuring that documentation can only be retrieved from trusted sources.
 
-#### (Optional) Test the MCP server locally with your `llms.txt` file(s) of choice:
+#### (Optional) Test the MCP server locally:
 ```bash
+# Test with default configuration
+uvx --from miamcpdoc miamcpdoc --default --transport sse --port 8082 --host localhost
+
+# Test with custom URLs
 uvx --from miamcpdoc miamcpdoc \
     --urls "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt" "LangChain:https://python.langchain.com/llms.txt" \
     --transport sse \
@@ -94,9 +142,45 @@ npx @modelcontextprotocol/inspector
 
 ![Screenshot 2025-03-19 at 11 01 31 AM](https://github.com/user-attachments/assets/3d1c8eb3-4d40-487f-8bad-3f9e660f770a)
 
-* Paste the following into the file (we use the `langgraph-docs-mcp` name and link to the LangGraph `llms.txt`).
+* Paste the following into the file. Choose one of these configurations:
 
+**Option 1: Use default bundled configuration (recommended)**
+```json
+{
+  "mcpServers": {
+    "miamcpdoc-default": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "miamcpdoc", 
+        "miamcpdoc",
+        "--default"
+      ]
+    }
+  }
+}
 ```
+
+**Option 2: Use custom config.yaml**
+```json
+{
+  "mcpServers": {
+    "miamcpdoc-custom": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "miamcpdoc",
+        "miamcpdoc", 
+        "--yaml",
+        "config.yaml"
+      ]
+    }
+  }
+}
+```
+
+**Option 3: Direct URL specification**
+```json
 {
   "mcpServers": {
     "langgraph-docs-mcp": {
@@ -106,9 +190,8 @@ npx @modelcontextprotocol/inspector
         "miamcpdoc",
         "miamcpdoc",
         "--urls",
-        "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt LangChain:https://python.langchain.com/llms.txt",
-        "--transport",
-        "stdio"
+        "LangGraph:https://langchain-ai.github.io/langgraph/llms.txt",
+        "LangChain:https://python.langchain.com/llms.txt"
       ]
     }
   }

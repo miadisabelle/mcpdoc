@@ -3,7 +3,9 @@
 
 import argparse
 import json
+import os
 import sys
+from pathlib import Path
 from typing import List, Dict
 
 import yaml
@@ -22,35 +24,45 @@ class CustomFormatter(
 
 EPILOG = """
 Examples:
+  # Create initial config.yaml in current directory
+  miamcpdoc --init
+  
+  # Create config.yaml with interactive prompts
+  miamcpdoc --init --interactive
+  
+  # Use default bundled configuration
+  miamcpdoc --default
+  miamcpdoc -D
+  
   # Directly specifying llms.txt URLs with optional names
-  mcpdoc --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt
+  miamcpdoc --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt
   
   # Using a local file (absolute or relative path)
-  mcpdoc --urls LocalDocs:/path/to/llms.txt --allowed-domains '*'
+  miamcpdoc --urls LocalDocs:/path/to/llms.txt --allowed-domains '*'
   
   # Using a YAML config file
-  mcpdoc --yaml sample_config.yaml
+  miamcpdoc --yaml config.yaml
 
   # Using a JSON config file
-  mcpdoc --json sample_config.json
+  miamcpdoc --json config.json
 
   # Combining multiple documentation sources
-  mcpdoc --yaml sample_config.yaml --json sample_config.json --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt
+  miamcpdoc --yaml config.yaml --json config.json --urls LangGraph:https://langchain-ai.github.io/langgraph/llms.txt
 
   # Using SSE transport with default host (127.0.0.1) and port (8000)
-  mcpdoc --yaml sample_config.yaml --transport sse
+  miamcpdoc --yaml config.yaml --transport sse
   
   # Using SSE transport with custom host and port
-  mcpdoc --yaml sample_config.yaml --transport sse --host 0.0.0.0 --port 9000
+  miamcpdoc --yaml config.yaml --transport sse --host 0.0.0.0 --port 9000
   
   # Using SSE transport with additional HTTP options
-  mcpdoc --yaml sample_config.yaml --follow-redirects --timeout 15 --transport sse --host localhost --port 8080
+  miamcpdoc --yaml config.yaml --follow-redirects --timeout 15 --transport sse --host localhost --port 8080
   
   # Allow fetching from additional domains. The domains hosting the llms.txt files are always allowed.
-  mcpdoc --yaml sample_config.yaml --allowed-domains https://example.com/ https://another-example.com/
+  miamcpdoc --yaml config.yaml --allowed-domains https://example.com/ https://another-example.com/
   
   # Allow fetching from any domain
-  mcpdoc --yaml sample_config.yaml --allowed-domains '*'
+  miamcpdoc --yaml config.yaml --allowed-domains '*'
 """
 
 
@@ -61,6 +73,24 @@ def parse_args() -> argparse.Namespace:
         description="MCP LLMS-TXT Documentation Server",
         formatter_class=CustomFormatter,
         epilog=EPILOG,
+    )
+
+    # Initialization options
+    parser.add_argument(
+        "--init",
+        action="store_true",
+        help="Create a config.yaml file in the current directory",
+    )
+    parser.add_argument(
+        "--interactive",
+        action="store_true",
+        help="Use interactive prompts when creating config (requires --init)",
+    )
+    parser.add_argument(
+        "--default",
+        "-D",
+        action="store_true",
+        help="Use the default bundled configuration",
     )
 
     # Allow combining multiple doc source methods
@@ -176,6 +206,69 @@ def load_config_file(file_path: str, file_format: str) -> List[Dict[str, str]]:
         sys.exit(1)
 
 
+def get_default_config_path() -> Path:
+    """Get the path to the bundled default config file.
+    
+    Returns:
+        Path to the default config.yaml file
+    """
+    return Path(__file__).parent / "default_config.yaml"
+
+
+def create_config_file(config_path: str, interactive: bool = False) -> None:
+    """Create a config.yaml file.
+    
+    Args:
+        config_path: Path where to create the config file
+        interactive: Whether to use interactive prompts
+    """
+    if os.path.exists(config_path):
+        print(f"Config file already exists at {config_path}")
+        return
+    
+    if interactive:
+        print("Creating interactive config.yaml...")
+        print("Enter documentation sources (press Enter with empty name to finish):")
+        
+        doc_sources = []
+        while True:
+            name = input("Documentation source name (or press Enter to finish): ").strip()
+            if not name:
+                break
+            
+            url = input(f"llms.txt URL for {name}: ").strip()
+            if not url:
+                print("URL cannot be empty, skipping...")
+                continue
+                
+            description = input(f"Description for {name} (optional): ").strip()
+            
+            source = {"name": name, "llms_txt": url}
+            if description:
+                source["description"] = description
+            
+            doc_sources.append(source)
+        
+        if not doc_sources:
+            print("No sources provided, using default configuration...")
+            # Copy default config
+            default_path = get_default_config_path()
+            with open(default_path, 'r', encoding='utf-8') as src:
+                content = src.read()
+        else:
+            content = yaml.dump(doc_sources, default_flow_style=False, sort_keys=False)
+    else:
+        # Copy default config
+        default_path = get_default_config_path()
+        with open(default_path, 'r', encoding='utf-8') as src:
+            content = src.read()
+    
+    with open(config_path, 'w', encoding='utf-8') as dst:
+        dst.write(content)
+    
+    print(f"Created config file at {config_path}")
+
+
 def create_doc_sources_from_urls(urls: List[str]) -> List[DocSource]:
     """Create doc sources from a list of URLs or file paths with optional names.
 
@@ -224,6 +317,16 @@ def main() -> None:
 
     args = parse_args()
 
+    # Handle initialization
+    if args.init:
+        if args.interactive and not args.init:
+            print("Error: --interactive requires --init", file=sys.stderr)
+            sys.exit(1)
+        
+        config_path = "config.yaml"
+        create_config_file(config_path, args.interactive)
+        return
+
     if args.creative_frameworks:
         from miamcpdoc import creative_frameworks_mcp
         creative_frameworks_mcp.main()
@@ -237,10 +340,15 @@ def main() -> None:
     # Load doc sources based on command-line arguments
     doc_sources: List[DocSource] = []
 
-    # Check if any source options were provided
-    if not (args.yaml or args.json or args.urls):
+    # Handle default configuration
+    if args.default:
+        default_config_path = get_default_config_path()
+        doc_sources.extend(load_config_file(str(default_config_path), "yaml"))
+    
+    # Check if any source options were provided (unless using default)
+    if not args.default and not (args.yaml or args.json or args.urls):
         print(
-            "Error: At least one source option (--yaml, --json, or --urls) is required",
+            "Error: At least one source option (--yaml, --json, --urls, or --default) is required",
             file=sys.stderr,
         )
         sys.exit(1)

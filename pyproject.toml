@@ -43,6 +43,7 @@ include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
     "miamcpdoc/*.txt",
+    "miamcpdoc/*.yaml",
     "miamcpdoc/mcp_server_docs/*.txt",
 ]
 
@@ -52,6 +53,7 @@ include = [
     "miamcpdoc/creative_frameworks/*.txt",
     "miamcpdoc/mcp_server_docs/*.txt",
     "miamcpdoc/*.txt",
+    "miamcpdoc/*.yaml",
 ]
 
 [tool.pytest.ini_options]
