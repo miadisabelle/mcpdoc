@@ -114,6 +114,19 @@ twine upload dist/*
 if [ $? -eq 0 ]; then
     echo -e "${GREEN}🎉 Successfully uploaded miamcpdoc ${NEW_VERSION} to PyPI!${NC}"
     echo -e "${BLUE}📋 You can now install with: pip install miamcpdoc==${NEW_VERSION}${NC}"
+    
+    # Create and push git tag
+    echo -e "${BLUE}🏷️  Creating git tag v${NEW_VERSION}...${NC}"
+    git tag -a "v${NEW_VERSION}" -m "Release version ${NEW_VERSION}"
+    
+    echo -e "${BLUE}📤 Pushing git tag to remote...${NC}"
+    git push origin "v${NEW_VERSION}"
+    
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ Git tag v${NEW_VERSION} created and pushed successfully!${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Git tag creation succeeded but push failed. You may need to push manually.${NC}"
+    fi
 else
     echo -e "${RED}❌ Upload failed${NC}"
     exit 1
