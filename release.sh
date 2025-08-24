@@ -75,6 +75,16 @@ echo "__version__ = \"$NEW_VERSION\"" > miamcpdoc/_version.py
 
 echo -e "${GREEN}✅ Version updated to ${NEW_VERSION}${NC}"
 
+# Commit the version bump
+echo -e "${BLUE}📝 Committing version bump...${NC}"
+git add pyproject.toml miamcpdoc/_version.py
+git commit -m "v${NEW_VERSION}"
+
+if [ $? -ne 0 ]; then
+    echo -e "${RED}❌ Error: Failed to commit version changes${NC}"
+    exit 1
+fi
+
 # Clean previous builds
 echo -e "${BLUE}🧹 Cleaning previous builds...${NC}"
 rm -rf dist/ build/ *.egg-info/
@@ -116,14 +126,14 @@ if [ $? -eq 0 ]; then
     echo -e "${BLUE}📋 You can now install with: pip install miamcpdoc==${NEW_VERSION}${NC}"
     
     # Create and push git tag
-    echo -e "${BLUE}🏷️  Creating git tag v${NEW_VERSION}...${NC}"
-    git tag -a "v${NEW_VERSION}" -m "Release version ${NEW_VERSION}"
+    echo -e "${BLUE}🏷️  Creating git tag ${NEW_VERSION}...${NC}"
+    git tag -a "${NEW_VERSION}" -m "Release version ${NEW_VERSION}"
     
     echo -e "${BLUE}📤 Pushing git tag to remote...${NC}"
-    git push origin "v${NEW_VERSION}"
+    git push origin "${NEW_VERSION}"
     
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}✅ Git tag v${NEW_VERSION} created and pushed successfully!${NC}"
+        echo -e "${GREEN}✅ Git tag ${NEW_VERSION} created and pushed successfully!${NC}"
     else
         echo -e "${YELLOW}⚠️  Git tag creation succeeded but push failed. You may need to push manually.${NC}"
     fi

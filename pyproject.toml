@@ -1,6 +1,6 @@
 [project]
 name = "miamcpdoc"
-version = "0.0.36"
+version = "0.0.37"
 description = "Mia's Server llms-txt documentation over MCP"
 readme = "README.md"
 license = "MIT"
