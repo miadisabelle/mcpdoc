@@ -1,6 +1,6 @@
 [project]
 name = "miamcpdoc"
-version = "0.0.38"
+version = "0.0.39"
 description = "Mia's Server llms-txt documentation over MCP"
 readme = "README.md"
 license = "MIT"
@@ -18,8 +18,8 @@ miamcpdoc = "miamcpdoc.cli:main"
 miamcpdoc-aisdk = "miamcpdoc.aisdk_docs_mcp:main"
 miamcpdoc-huggingface = "miamcpdoc.huggingface_docs_mcp:main"
 miamcpdoc-langgraph = "miamcpdoc.langgraph_docs_mcp:main"
-miamcpdoc-llms = "miamcpdoc.what_is_llms_mcp:main"
-miamcpdoc-creative = "miamcpdoc.creative_frameworks_mcp:main"
+miamcpdoc-llms-txt-standard = "miamcpdoc.what_is_llms_mcp:main"
+miamcpdoc-creative-orientation = "miamcpdoc.creative_orientation_mcp:main"
 
 [dependency-groups]
 test = [
@@ -32,8 +32,6 @@ test = [
     "ruff>=0.9.7",
 ]
 
-
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -42,15 +40,19 @@ build-backend = "hatchling.build"
 include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
+    "miamcpdoc/__llms/*.txt",
+    "miamcpdoc/__llms/*.md",
+    "miamcpdoc/mcp_server_docs/*.txt",
     "miamcpdoc/*.txt",
     "miamcpdoc/*.yaml",
-    "miamcpdoc/mcp_server_docs/*.txt",
 ]
 
 [tool.hatch.build.targets.wheel]
 include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
+    "miamcpdoc/__llms/*.txt",
+    "miamcpdoc/__llms/*.md",
     "miamcpdoc/mcp_server_docs/*.txt",
     "miamcpdoc/*.txt",
     "miamcpdoc/*.yaml",
@@ -58,10 +60,6 @@ include = [
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-# -ra: Report all extra test outcomes (passed, skipped, failed, etc.)
-# -q: Enable quiet mode for less cluttered output
-# -v: Enable verbose output to display detailed test names and statuses
-# --durations=5: Show the 10 slowest tests after the run (useful for performance tuning)
 addopts = "-ra -q -v --durations=5"
 testpaths = [
     "tests",
@@ -70,4 +68,3 @@ python_files = ["test_*.py"]
 python_functions = ["test_*"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
-
