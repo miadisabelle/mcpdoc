@@ -42,8 +42,7 @@ build-backend = "hatchling.build"
 include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
-    "miamcpdoc/__llms/*.txt",
-    "miamcpdoc/__llms/*.md",
+    "miamcpdoc/__llms/*",
     "miamcpdoc/mcp_server_docs/*.txt",
     "miamcpdoc/*.txt",
     "miamcpdoc/*.yaml",
@@ -53,8 +52,7 @@ include = [
 include = [
     "miamcpdoc/**/*.py",
     "miamcpdoc/creative_frameworks/*.txt",
-    "miamcpdoc/__llms/*.txt",
-    "miamcpdoc/__llms/*.md",
+    "miamcpdoc/__llms/*",
     "miamcpdoc/mcp_server_docs/*.txt",
     "miamcpdoc/*.txt",
     "miamcpdoc/*.yaml",
